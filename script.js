@@ -34,7 +34,7 @@ function getHeader(json) {
 async function show(url) {
     const tables = ["accesorioPBG", "Ajustes recomendaciones", "Ajustes de diseno", "alerta",
         "Apartado_botonesObj", "Apartado_forro", "ASN", "Apartado_tela", "Asesores", "Autorizaciones",
-        "Botones", "Bases/Tablas", "Cambios_rollos", "cambiosMedidasOnline", "CaracteristicasModelo", "chaleco recomendacion",
+        "Botones", "Cambios_rollos", "cambiosMedidasOnline", "CaracteristicasModelo", "chaleco recomendacion",
         "Cita", "Cliente", "Comentarios_pedido", "Comentarios_prendas", "Complejidades", "Composturas", "Composturas solicitadas",
         "Repeticiones solicitadas", "comprobantes", "Folios", "Conglomerado_medidas", "Consumo_tela", "Consumo_habilitaciones",
         "consumo_modelo_habilitaciones", "consumos excedentes", "consumos_js", "ConsumoSastreria", "consumosEstimadosTipoPrenda",
