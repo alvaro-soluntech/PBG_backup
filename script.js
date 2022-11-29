@@ -94,10 +94,4 @@ async function show(url) {
 
 
 //calling the function
-cron.schedule('0 19 * * *', () => {
-    console.log('running at 19:00 GMT');
-    show(api_url);
-  }, {
-    scheduled: true,
-    timezone: "America/Mexico_City"
-  });
+show(api_url);
