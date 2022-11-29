@@ -68,6 +68,7 @@ async function show(url) {
         try {
             if (!fs.existsSync(table)) {
               fs.mkdirSync(table);
+              console.log("Folder created: " + table);
             }
           } catch (err) {
             console.error(err);
