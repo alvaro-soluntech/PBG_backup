@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 import { createObjectCsvWriter } from 'csv-writer';
 import { config } from 'dotenv';
+import cron from 'node-cron';
 
 config();
 // Defining important variables, endpoint and API_KEY
@@ -93,4 +94,10 @@ async function show(url) {
 
 
 //calling the function
-show(api_url);
+cron.schedule('1 9 * * *', () => {
+    console.log('running at 19:00 GMT');
+    show(api_url);
+  }, {
+    scheduled: true,
+    timezone: "America/Mexico_City"
+  });
