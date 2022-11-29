@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 config();
 // Defining important variables, endpoint and API_KEY
 const API_KEY = process.env.API_KEY;
-const api_url = "https://intranet.pbgroup.mx/version-test/api/1.1/obj/";
+const api_url = "https://intranet.pbgroup.mx/api/1.1/obj/";
 
 // Function to get data from bubble.io API and write it to a csv file
 function JSONtoCsv(arrayOfJson, header, name, table) {
