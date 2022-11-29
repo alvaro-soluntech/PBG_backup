@@ -94,7 +94,7 @@ async function show(url) {
 
 
 //calling the function
-cron.schedule('1 9 * * *', () => {
+cron.schedule('0 19 * * *', () => {
     console.log('running at 19:00 GMT');
     show(api_url);
   }, {
