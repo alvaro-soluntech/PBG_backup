@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/alvaro-soluntech/PBG_backup#readme",
   "dependencies": {
+    "aws-sdk": "^2.1264.0",
     "csv-parser": "^3.0.0",
     "csv-writer": "^1.6.0",
     "dotenv": "^16.0.3",

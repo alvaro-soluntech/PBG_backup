@@ -2,12 +2,17 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 import { createObjectCsvWriter } from 'csv-writer';
 import { config } from 'dotenv';
-import cron from 'node-cron';
+import AWS from 'aws-sdk';
 
 config();
 // Defining important variables, endpoint and API_KEY
 const API_KEY = process.env.API_KEY;
 const api_url = "https://intranet.pbgroup.mx/api/1.1/obj/";
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
 
 // Function to get data from bubble.io API and write it to a csv file
 function JSONtoCsv(arrayOfJson, header, name, table) {
@@ -18,7 +23,22 @@ function JSONtoCsv(arrayOfJson, header, name, table) {
         alwaysQuote: true
     }
     );
-    csvWriter.writeRecords(arrayOfJson).then(() => console.log('The CSV file was written successfully'));
+    csvWriter.writeRecords(arrayOfJson).then(function () {
+        const fileContent = fs.readFileSync(`${table}/${name}.csv`);
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: `${table}/${name}.csv`,
+            Body: fileContent
+        };
+        console.log(params)
+        s3.upload(params, function (err, data) {
+            if (err) {
+                throw err;
+            }
+            console.log(`File uploaded successfully. ${data.Location}`);
+        });
+        console.log('The CSV file was written successfully')
+    });
 }
 
 //Function to get the headers of each table
@@ -67,12 +87,11 @@ async function show(url) {
     tables.forEach(async (table) => {
         try {
             if (!fs.existsSync(table)) {
-              fs.mkdirSync(table);
-              console.log("Folder created: " + table);
+                fs.mkdirSync(table);
             }
-          } catch (err) {
+        } catch (err) {
             console.error(err);
-          }
+        }
         const response = await fetch(url + table, {
             method: "GET",
             withCredentials: true,
@@ -82,12 +101,13 @@ async function show(url) {
             }
         });
         const json = await response.json();
-        if (json && json.statusCode !==404) {
+        if (json && json.statusCode !== 404) {
             const values = json.response.results;
             const header = getHeader(values);
             const date = new Date(Date.now());
             const name = `${table}_${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
-            JSONtoCsv(json.response.results, header, name,table);
+            JSONtoCsv(json.response.results, header, name, table);
+
         }
     });
 
